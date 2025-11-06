@@ -49,6 +49,17 @@ struct CoffeeHome: View {
                 .onchanged ({ value in
                     offsetY = value.translation.height * 0.4 //multiply by 0.4 to slow down the gestures
                 }).onEnded ({ value in
+                    let translation = value.translation.height
+
+                    if translation > 0 {
+                        if currentIndex > 0 && translation > 250 {
+                            currentIndex -= 1
+                        }
+                    } else {
+                        if currentIndex < CGFloat(coffees.count - 1) && -translation > 250 {
+                            currentIndex += 1
+                        }
+                    }
                     withAnimation(.easeInOut) {
                         offsetY = .zero
                     }
