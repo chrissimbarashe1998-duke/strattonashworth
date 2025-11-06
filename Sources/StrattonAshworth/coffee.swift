@@ -60,11 +60,11 @@ struct CoffeeHome: View {
                             currentIndex += 1
                         }
                     }
-                    withAnimation(.easeInOut) {
-                        offsetY = .zero
-                    }
+
+                    offsetY = .zero
                 })
         )
+        
     }
 }
 
