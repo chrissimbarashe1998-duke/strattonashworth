@@ -23,33 +23,79 @@ let coffees: [Coffee] = [
 import SwiftUI
 
 struct CoffeeHome: View {
+    @State var offsetY: CGFloat = 0
+    @State var currentIndex: CGFloat = 0
     var body: some View {
-        NavigationView {
-            List(coffees) { coffee in
-                HStack(spacing: 12) {
-                    Image(coffee.imageNaame)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 56, height: 56)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(coffee.title)
-                            .font(.headline)
-                        Text(coffee.price)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
+        GeometryReader { 
+            let size = $0.size
+            //MARK: Since card size is the size of the screen width
+
+            let cardSize = size.width
+
+            VStack(spacing: 0) {
+                ForEach(coffees) { coffee in
+                    coffeeview(coffee: coffee, size: size)
+                        
                 }
-                .padding(.vertical, 6)
             }
-            .navigationTitle("Coffee")
+            .frame(width: size.width)
+            .padding(.top, size.height - cardSize)
+            .offset(y: offsetY)
+            .offset(y: -currentIndex * cardSize)
         }
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture()
+                .onchanged ({ value in
+                    offsetY = value.translation.height * 0.4 //multiply by 0.4 to slow down the gestures
+                }).onEnded ({ value in
+                    withAnimation(.easeInOut) {
+                        offsetY = .zero
+                    }
+                })
+        )
     }
 }
 
 struct CoffeeHome_Previews: PreviewProvider {
     static var previews: some View {
         CoffeeHome()
+    }
+}
+
+struct CoffeeContentView: View {
+    var body: some View {
+        CoffeeHome()
+    }
+}
+
+struct CoffeeContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        CoffeeContentView()
+    }
+}
+
+struct coffeeview: View {
+    var coffee: Coffee
+    var size: CGSize
+
+    var body: some View {
+        GeometryReader{ geometry in 
+        let size = geometry.size
+
+        Image(coffee.imageNaame)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(width: size.width, height: size.height)
+        }
+        .frame(height: size.width)
+    }
+}
+
+struct coffeeview_Previews: PreviewProvider {
+    static var previews: some View {
+        coffeeview(coffee: coffees.first!, size: CGSize(width: 120, height: 90))
+            .previewLayout(.sizeThatFits)
+            .padding()
     }
 }
