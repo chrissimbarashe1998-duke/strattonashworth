@@ -237,10 +237,70 @@ struct SelectedView: View {
             }
 
             Vstack {
-                
+                Text(book.title)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding()
+
+                    HStack {
+                        Text("By Author")
+                        line()
+                        Text("Date Published")
+                    }
+                    .foregroundStyle(.secondary)
+
+                    HStack {
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Reads")
+                            .foregroundStyle(.secondary)
+
+                            Text("1.2M")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+
+                        Spacer()
+
+                        line()
+
+                        Spacer()
+
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Likes")
+                                .foregroundStyle(.secondary)
+
+                                Text("350K")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                        }
+
+                        Spacer()
+
+                        line()
+
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("PAGES")
+                                .foregroundStyle(.secondary)
+
+                                Text("320")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                        }
+                    }
             }
+            .background(.ultraThinMaterial)
         }
         .ignoresSafeArea()
+    }
+}
+
+struct line: View {
+    var body: some View {
+        Rectangle()
+            .frame(height: 35, width: 1)
+            .foregroundColor(.gray.opacity(0.3))
+            .padding(.horizontal)
     }
 }
 
